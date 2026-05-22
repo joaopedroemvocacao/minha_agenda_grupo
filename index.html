@@ -283,6 +283,7 @@
             color: #adb5bd;
         }
 
+        /* MODAL DE EDIÇÃO */
         .modal {
             display: none;
             position: fixed;
@@ -302,6 +303,77 @@
             border-radius: 20px;
             max-width: 500px;
             width: 90%;
+        }
+
+        /* MODAL DE CONFIRMAÇÃO (POPUP DE CANCELAR) */
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+
+        .confirm-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .confirm-content h3 {
+            color: #dc3545;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .confirm-content p {
+            color: #555;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn-confirm-yes {
+            background: #dc3545;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .btn-confirm-yes:hover {
+            background: #c82333;
+        }
+
+        .btn-confirm-no {
+            background: #6c757d;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .btn-confirm-no:hover {
+            background: #5a6268;
         }
 
         /* POPUP DE NOTIFICAÇÃO (TOAST) */
@@ -414,6 +486,10 @@
                     <form id="agendaForm">
                         <div class="form-grid">
                             <div class="form-group">
+                                <label>📝 Nome da Reunião</label>
+                                <input type="text" id="nomeReuniao" placeholder="Ex: Reunião de vendas, Alinhamento, etc" required>
+                            </div>
+                            <div class="form-group">
                                 <label>👤 Nome do Cliente</label>
                                 <input type="text" id="nome" placeholder="Digite o nome completo" required>
                             </div>
@@ -456,30 +532,46 @@
             <h3>✏️ Editar Reunião</h3>
             <input type="hidden" id="editId">
             <div class="form-group">
-                <label>Nome</label>
+                <label>📝 Nome da Reunião</label>
+                <input type="text" id="editNomeReuniao" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
+            </div>
+            <div class="form-group">
+                <label>👤 Nome do Cliente</label>
                 <input type="text" id="editNome" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
             </div>
             <div class="form-group">
-                <label>Telefone</label>
+                <label>📞 Telefone</label>
                 <input type="text" id="editTelefone" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
             </div>
             <div class="form-group">
-                <label>Data</label>
+                <label>📅 Data</label>
                 <input type="date" id="editData" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
             </div>
             <div class="form-group">
-                <label>Horário</label>
+                <label>⏰ Horário</label>
                 <input type="time" id="editHorario" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
             </div>
             <div class="form-group">
-                <label>Local</label>
+                <label>📍 Local</label>
                 <select id="editLocal" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
-                    <option value="meet">Meet</option>
-                    <option value="Presencial">Presencial</option>
+                    <option value="meet">💻 Google Meet (Online)</option>
+                    <option value="Presencial">🏢 Presencial (Escritório)</option>
                 </select>
             </div>
             <button onclick="salvarEdicao()" class="btn-primary" style="margin-bottom:10px;">💾 Salvar Alterações</button>
             <button onclick="fecharModal()" style="width:100%; padding:10px; background:#6c757d; color:white; border:none; border-radius:8px; cursor:pointer;">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO (CANCELAR REUNIÃO) -->
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-content">
+            <h3>⚠️ Confirmar</h3>
+            <p>Tem certeza que deseja cancelar esta reunião?</p>
+            <div class="confirm-buttons">
+                <button class="btn-confirm-yes" id="confirmYes">Sim, cancelar</button>
+                <button class="btn-confirm-no" id="confirmNo">Não, voltar</button>
+            </div>
         </div>
     </div>
 
@@ -491,6 +583,9 @@
     </div>
 
     <script>
+        // Variável para guardar o ID da reunião a ser cancelada
+        let cancelarId = null;
+
         // TELA DE CARREGAMENTO
         window.addEventListener('load', function() {
             setTimeout(function() {
@@ -527,6 +622,36 @@
             toast.classList.remove('show');
         }
 
+        // FUNÇÃO DO POPUP DE CONFIRMAÇÃO
+        function mostrarConfirmacao(id) {
+            cancelarId = id;
+            document.getElementById('confirmModal').style.display = 'flex';
+        }
+
+        function fecharConfirmacao() {
+            document.getElementById('confirmModal').style.display = 'none';
+            cancelarId = null;
+        }
+
+        // Eventos dos botões do modal de confirmação
+        document.getElementById('confirmYes').onclick = async function() {
+            if(cancelarId) {
+                const resposta = await fetch(`/cancelar/${cancelarId}`, { method: 'DELETE' });
+                const resultado = await resposta.json();
+                if(resultado.sucesso) {
+                    mostrarToast('info', '🗑️ Cancelado!', resultado.mensagem);
+                } else {
+                    mostrarToast('error', '❌ Erro!', resultado.mensagem);
+                }
+                fecharConfirmacao();
+                carregarLista();
+            }
+        };
+
+        document.getElementById('confirmNo').onclick = function() {
+            fecharConfirmacao();
+        };
+
         // TROCAR ABA
         function switchTab(tab) {
             document.getElementById('agendarTab').classList.remove('active');
@@ -548,6 +673,7 @@
             e.preventDefault();
             
             const dados = {
+                nomeReuniao: document.getElementById('nomeReuniao').value,
                 nome: document.getElementById('nome').value,
                 telefone: document.getElementById('telefone').value,
                 data: document.getElementById('data').value,
@@ -586,20 +712,21 @@
                 listaDiv.innerHTML = reunioes.map(r => `
                     <div class="reuniao-item">
                         <div class="reuniao-header">
-                            <span class="reuniao-nome">${r.nome}</span>
+                            <span class="reuniao-nome">📝 ${r.nomeReuniao || 'Sem título'}</span>
                             <span class="reuniao-id">ID: ${r.id}</span>
                         </div>
                         <div class="reuniao-detalhes">
+                            <span>👤 ${r.nome}</span>
+                            <span>📱 ${r.telefone}</span>
                             <span>📅 ${formatarData(r.data)}</span>
                             <span>⏰ ${r.horario}</span>
-                            <span>📱 ${r.telefone}</span>
                             <span class="${r.local === 'meet' ? 'badge-meet' : 'badge-presencial'}">
                                 ${r.local === 'meet' ? '💻 Meet' : '🏢 Presencial'}
                             </span>
                         </div>
                         <div>
                             <button class="btn-edit" onclick="abrirModalEditar(${r.id})">✏️ Editar</button>
-                            <button class="btn-delete" onclick="confirmarCancelar(${r.id})">🗑️ Cancelar</button>
+                            <button class="btn-delete" onclick="mostrarConfirmacao(${r.id})">🗑️ Cancelar</button>
                         </div>
                     </div>
                 `).join('');
@@ -619,6 +746,7 @@
             if(resultado.sucesso) {
                 const r = resultado.reuniao;
                 document.getElementById('editId').value = r.id;
+                document.getElementById('editNomeReuniao').value = r.nomeReuniao || '';
                 document.getElementById('editNome').value = r.nome;
                 document.getElementById('editTelefone').value = r.telefone;
                 document.getElementById('editData').value = r.data;
@@ -633,6 +761,7 @@
         async function salvarEdicao() {
             const id = document.getElementById('editId').value;
             const dados = {
+                nomeReuniao: document.getElementById('editNomeReuniao').value,
                 nome: document.getElementById('editNome').value,
                 telefone: document.getElementById('editTelefone').value,
                 data: document.getElementById('editData').value,
@@ -652,20 +781,6 @@
             }
             fecharModal();
             carregarLista();
-        }
-
-        // CANCELAR REUNIÃO
-        async function confirmarCancelar(id) {
-            if(confirm('Tem certeza que deseja cancelar esta reunião?')) {
-                const resposta = await fetch(`/cancelar/${id}`, { method: 'DELETE' });
-                const resultado = await resposta.json();
-                if(resultado.sucesso) {
-                    mostrarToast('info', '🗑️ Cancelado!', resultado.mensagem);
-                } else {
-                    mostrarToast('error', '❌ Erro!', resultado.mensagem);
-                }
-                carregarLista();
-            }
         }
 
         function fecharModal() {

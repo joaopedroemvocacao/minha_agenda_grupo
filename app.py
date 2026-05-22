@@ -34,6 +34,7 @@ def agendar():
     dados = request.json
     reuniao = {
         "id": proximo_id(),
+        "nomeReuniao": dados['nomeReuniao'],
         "nome": dados['nome'],
         "telefone": dados['telefone'],
         "data": dados['data'],
@@ -45,7 +46,7 @@ def agendar():
     if reuniao['local'] in locais_disponiveis:
         agenda.append(reuniao)
         salvar_agenda()
-        return jsonify({"sucesso": True, "mensagem": f"Reunião agendada! ID: {reuniao['id']}"})
+        return jsonify({"sucesso": True, "mensagem": f"Reunião '{reuniao['nomeReuniao']}' agendada! ID: {reuniao['id']}"})
     else:
         return jsonify({"sucesso": False, "mensagem": "Local inválido!"})
 
@@ -66,6 +67,7 @@ def mudar(id):
     dados = request.json
     for reuniao in agenda:
         if reuniao['id'] == id:
+            reuniao['nomeReuniao'] = dados.get('nomeReuniao', reuniao['nomeReuniao'])
             reuniao['nome'] = dados.get('nome', reuniao['nome'])
             reuniao['telefone'] = dados.get('telefone', reuniao['telefone'])
             reuniao['data'] = dados.get('data', reuniao['data'])
