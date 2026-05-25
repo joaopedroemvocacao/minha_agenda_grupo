@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda de Reuniões</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         /* TELA DE CARREGAMENTO */
         .loading-screen {
@@ -23,12 +19,6 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .loading-content {
-            text-align: center;
-            color: white;
         }
 
         .spinner {
@@ -47,31 +37,13 @@
         }
 
         .loading-text {
+            color: white;
+            text-align: center;
             font-size: 20px;
-            font-weight: 500;
-            letter-spacing: 2px;
         }
 
-        .loading-dots {
-            display: inline-block;
-        }
-
-        .loading-dots span {
-            animation: blink 1.4s infinite;
-            animation-fill-mode: both;
-        }
-
-        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes blink {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-
-        /* ESTILOS PRINCIPAIS */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 40px 20px;
@@ -80,7 +52,6 @@
         .container { max-width: 1200px; margin: 0 auto; }
         .header { text-align: center; color: white; margin-bottom: 40px; }
         .header h1 { font-size: 48px; margin-bottom: 10px; }
-        .header p { font-size: 18px; opacity: 0.9; }
 
         .main-card {
             background: white;
@@ -93,7 +64,6 @@
             display: flex;
             background: #f8f9fa;
             border-bottom: 2px solid #e9ecef;
-            flex-wrap: wrap;
         }
 
         .tab {
@@ -102,27 +72,19 @@
             text-align: center;
             cursor: pointer;
             font-weight: 600;
-            color: #6c757d;
-            transition: all 0.3s;
             border: none;
             background: none;
             font-size: 16px;
         }
 
-        .tab:hover { background: #e9ecef; }
         .tab.active {
             color: #667eea;
             background: white;
             border-bottom: 3px solid #667eea;
         }
 
-        .tab-content { display: none; padding: 30px; animation: fadeIn 0.3s ease; }
+        .tab-content { display: none; padding: 30px; }
         .tab-content.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group { margin-bottom: 20px; }
@@ -136,7 +98,6 @@
             border-radius: 12px;
             font-size: 14px;
         }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #667eea; }
 
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -149,7 +110,6 @@
             cursor: pointer;
             width: 100%;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
 
         .btn-secondary {
             background: #6c757d;
@@ -158,7 +118,6 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
         }
 
         .btn-export {
@@ -168,27 +127,10 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
         }
 
-        .btn-edit {
-            background: #ffc107;
-            color: #333;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-right: 8px;
-        }
-
-        .btn-delete {
-            background: #dc3545;
-            color: white;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+        .btn-edit { background: #ffc107; color: #333; padding: 6px 12px; border: none; border-radius: 8px; cursor: pointer; margin-right: 8px; }
+        .btn-delete { background: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 8px; cursor: pointer; }
 
         .reuniao-item {
             background: #f8f9fa;
@@ -198,29 +140,9 @@
             border-left: 4px solid #667eea;
         }
 
-        .reuniao-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-
-        .reuniao-nome { font-size: 18px; font-weight: 700; color: #333; }
-        .reuniao-id {
-            font-size: 11px;
-            color: #6c757d;
-            background: #e9ecef;
-            padding: 2px 8px;
-            border-radius: 20px;
-        }
-
-        .reuniao-detalhes {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin: 10px 0;
-        }
+        .reuniao-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .reuniao-nome { font-size: 18px; font-weight: 700; }
+        .reuniao-detalhes { display: flex; gap: 15px; margin: 10px 0; flex-wrap: wrap; }
 
         .badge-meet {
             background: #d4f5d4;
@@ -238,13 +160,8 @@
             font-size: 12px;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 60px;
-            color: #adb5bd;
-        }
+        .empty-state { text-align: center; padding: 60px; color: #adb5bd; }
 
-        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -257,6 +174,7 @@
             align-items: center;
             z-index: 1000;
         }
+
         .modal-content {
             background: white;
             padding: 30px;
@@ -265,7 +183,6 @@
             width: 90%;
         }
 
-        /* TOAST */
         .toast-notification {
             position: fixed;
             top: 20px;
@@ -277,30 +194,16 @@
             z-index: 10000;
             transform: translateX(400px);
             transition: transform 0.3s ease;
-            min-width: 280px;
             border-left: 4px solid #28a745;
         }
+
         .toast-notification.show { transform: translateX(0); }
         .toast-notification.success { border-left-color: #28a745; }
         .toast-notification.error { border-left-color: #dc3545; }
-        .toast-notification.info { border-left-color: #17a2b8; }
-        .toast-title { font-weight: 700; margin-bottom: 5px; font-size: 16px; }
-        .toast-title.success { color: #28a745; }
-        .toast-title.error { color: #dc3545; }
-        .toast-message { color: #555; font-size: 14px; }
-        .toast-close {
-            position: absolute;
-            top: 8px;
-            right: 12px;
-            cursor: pointer;
-            color: #999;
-            font-size: 18px;
-        }
 
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
             .form-group.full-width { grid-column: span 1; }
-            .tab { font-size: 12px; padding: 12px; }
         }
     </style>
 </head>
@@ -308,10 +211,9 @@
 
     <!-- TELA DE CARREGAMENTO -->
     <div id="loadingScreen" class="loading-screen">
-        <div class="loading-content">
+        <div>
             <div class="spinner"></div>
-            <div class="loading-text">Carregando<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></div>
-            <p style="margin-top: 20px; font-size: 14px; opacity: 0.8;">Agenda de Reuniões</p>
+            <div class="loading-text">Carregando...</div>
         </div>
     </div>
 
@@ -329,18 +231,17 @@
                     <button class="tab" onclick="switchTab('ver')">📋 Ver Agenda</button>
                 </div>
 
-                <!-- ABA AGENDAR -->
                 <div id="agendarTab" class="tab-content active">
                     <h2>Nova Reunião</h2>
                     <form id="agendaForm">
                         <div class="form-grid">
                             <div class="form-group full-width">
                                 <label>📝 Título da Reunião</label>
-                                <input type="text" id="titulo" placeholder="Ex: Reunião de vendas" required>
+                                <input type="text" id="titulo" required>
                             </div>
                             <div class="form-group full-width">
                                 <label>📄 Descrição</label>
-                                <textarea id="descricao" rows="3" placeholder="Descrição da reunião..."></textarea>
+                                <textarea id="descricao" rows="3"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>📅 Data</label>
@@ -357,8 +258,8 @@
                             <div class="form-group">
                                 <label>📍 Local</label>
                                 <select id="local">
-                                    <option value="meet">💻 Google Meet (Online)</option>
-                                    <option value="Presencial">🏢 Presencial (Escritório)</option>
+                                    <option value="meet">💻 Google Meet</option>
+                                    <option value="Presencial">🏢 Presencial</option>
                                 </select>
                             </div>
                         </div>
@@ -366,11 +267,10 @@
                     </form>
                 </div>
 
-                <!-- ABA VER AGENDA -->
                 <div id="verTab" class="tab-content">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                         <h2>Reuniões Agendadas</h2>
-                        <div style="display: flex; gap: 10px;">
+                        <div>
                             <button onclick="carregarLista()" class="btn-secondary">🔄 Atualizar</button>
                             <button onclick="exportarJSON()" class="btn-export">📋 Exportar JSON</button>
                         </div>
@@ -381,77 +281,51 @@
         </div>
     </div>
 
-    <!-- MODAL DE EDIÇÃO -->
+    <!-- MODAL EDIÇÃO -->
     <div id="modalEdicao" class="modal">
         <div class="modal-content">
             <h3>✏️ Editar Reunião</h3>
             <input type="hidden" id="editId">
-            <div class="form-group">
-                <label>Título</label>
-                <input type="text" id="editTitulo" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
-            </div>
-            <div class="form-group">
-                <label>Descrição</label>
-                <textarea id="editDescricao" rows="3" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Data</label>
-                <input type="date" id="editData" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
-            </div>
-            <div class="form-group">
-                <label>Horário Início</label>
-                <input type="time" id="editHorarioInicio" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
-            </div>
-            <div class="form-group">
-                <label>Horário Fim</label>
-                <input type="time" id="editHorarioFim" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
-            </div>
-            <div class="form-group">
-                <label>Local</label>
-                <select id="editLocal" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
-                    <option value="meet">💻 Google Meet</option>
-                    <option value="Presencial">🏢 Presencial</option>
-                </select>
-            </div>
-            <button onclick="salvarEdicao()" class="btn-primary">💾 Salvar</button>
-            <button onclick="fecharModal()" style="margin-top:10px; width:100%; padding:10px; background:#6c757d; color:white; border:none; border-radius:8px; cursor:pointer;">Cancelar</button>
+            <input type="text" id="editTitulo" placeholder="Título" style="width:100%; margin-bottom:10px; padding:10px;">
+            <textarea id="editDescricao" rows="3" placeholder="Descrição" style="width:100%; margin-bottom:10px; padding:10px;"></textarea>
+            <input type="date" id="editData" style="width:100%; margin-bottom:10px; padding:10px;">
+            <input type="time" id="editHorarioInicio" style="width:100%; margin-bottom:10px; padding:10px;">
+            <input type="time" id="editHorarioFim" style="width:100%; margin-bottom:10px; padding:10px;">
+            <select id="editLocal" style="width:100%; margin-bottom:10px; padding:10px;">
+                <option value="meet">💻 Google Meet</option>
+                <option value="Presencial">🏢 Presencial</option>
+            </select>
+            <button onclick="salvarEdicao()" class="btn-primary">Salvar</button>
+            <button onclick="fecharModal()" style="margin-top:10px; width:100%; padding:10px;">Cancelar</button>
         </div>
     </div>
 
     <!-- TOAST -->
     <div id="toastNotification" class="toast-notification">
-        <span class="toast-close" onclick="fecharToast()">&times;</span>
         <div class="toast-title" id="toastTitle">Sucesso</div>
-        <div class="toast-message" id="toastMessage">Mensagem</div>
+        <div class="toast-message" id="toastMessage"></div>
     </div>
 
     <script>
-        // FECHAR TELA DE CARREGAMENTO
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('loadingScreen').style.opacity = '0';
-                setTimeout(function() {
-                    document.getElementById('loadingScreen').style.display = 'none';
-                    document.getElementById('mainContent').style.display = 'block';
-                }, 500);
-            }, 800);
-        });
+        // FECHA A TELA DE CARREGAMENTO APÓS 1 SEGUNDO
+        setTimeout(function() {
+            const loading = document.getElementById('loadingScreen');
+            const main = document.getElementById('mainContent');
+            if(loading && main) {
+                loading.style.display = 'none';
+                main.style.display = 'block';
+            }
+        }, 1000);
 
-        function mostrarToast(tipo, titulo, mensagem) {
+        function mostrarToast(tipo, titulo, msg) {
             const toast = document.getElementById('toastNotification');
-            const toastTitle = document.getElementById('toastTitle');
-            const toastMessage = document.getElementById('toastMessage');
-            toast.className = 'toast-notification';
-            toast.classList.add(tipo);
-            toastTitle.className = 'toast-title ' + tipo;
-            toastTitle.textContent = titulo;
-            toastMessage.textContent = mensagem;
+            const title = document.getElementById('toastTitle');
+            const message = document.getElementById('toastMessage');
+            toast.className = 'toast-notification ' + tipo;
+            title.textContent = titulo;
+            message.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => fecharToast(), 3000);
-        }
-
-        function fecharToast() {
-            document.getElementById('toastNotification').classList.remove('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
         function switchTab(tab) {
@@ -469,7 +343,6 @@
             }
         }
 
-        // AGENDAR
         document.getElementById('agendaForm').onsubmit = async (e) => {
             e.preventDefault();
             
@@ -490,31 +363,28 @@
             
             const resultado = await resposta.json();
             mostrarToast(resultado.sucesso ? 'success' : 'error', 
-                        resultado.sucesso ? '✅ Sucesso!' : '❌ Erro!', 
+                        resultado.sucesso ? '✅ Sucesso' : '❌ Erro', 
                         resultado.mensagem);
             
             if(resultado.sucesso) {
                 document.getElementById('agendaForm').reset();
-                if(document.getElementById('verTab').classList.contains('active')) {
-                    carregarLista();
-                }
+                carregarLista();
             }
         };
 
-        // LISTAR
         async function carregarLista() {
             const resposta = await fetch('/listar');
             const reunioes = await resposta.json();
-            const listaDiv = document.getElementById('lista');
+            const div = document.getElementById('lista');
             
             if(reunioes.length === 0) {
-                listaDiv.innerHTML = '<div class="empty-state">📭 Nenhuma reunião agendada ainda</div>';
+                div.innerHTML = '<div class="empty-state">📭 Nenhuma reunião agendada ainda</div>';
             } else {
-                listaDiv.innerHTML = reunioes.map(r => `
+                div.innerHTML = reunioes.map(r => `
                     <div class="reuniao-item">
                         <div class="reuniao-header">
                             <span class="reuniao-nome">📝 ${r.titulo}</span>
-                            <span class="reuniao-id">ID: ${r.id}</span>
+                            <span>ID: ${r.id}</span>
                         </div>
                         <div class="reuniao-detalhes">
                             <span>📅 ${r.data}</span>
@@ -524,17 +394,80 @@
                             </span>
                         </div>
                         <div>
-                            <button class="btn-edit" onclick="abrirModalEditar(${r.id})">✏️ Editar</button>
-                            <button class="btn-delete" onclick="confirmarCancelar(${r.id})">🗑️ Cancelar</button>
+                            <button class="btn-edit" onclick="abrirEditar(${r.id})">✏️ Editar</button>
+                            <button class="btn-delete" onclick="cancelarReuniao(${r.id})">🗑️ Cancelar</button>
                         </div>
                     </div>
                 `).join('');
             }
         }
 
-        // EDITAR
-        async function abrirModalEditar(id) {
+        async function abrirEditar(id) {
             const resposta = await fetch(`/buscar/${id}`);
             const resultado = await resposta.json();
             if(resultado.sucesso) {
                 const r = resultado.reuniao;
+                document.getElementById('editId').value = r.id;
+                document.getElementById('editTitulo').value = r.titulo;
+                document.getElementById('editDescricao').value = r.descricao || '';
+                document.getElementById('editData').value = r.data;
+                document.getElementById('editHorarioInicio').value = r.horario_inicio;
+                document.getElementById('editHorarioFim').value = r.horario_fim;
+                document.getElementById('editLocal').value = r.local;
+                document.getElementById('modalEdicao').style.display = 'flex';
+            }
+        }
+
+        async function salvarEdicao() {
+            const id = document.getElementById('editId').value;
+            const dados = {
+                titulo: document.getElementById('editTitulo').value,
+                descricao: document.getElementById('editDescricao').value,
+                data: document.getElementById('editData').value,
+                horario_inicio: document.getElementById('editHorarioInicio').value,
+                horario_fim: document.getElementById('editHorarioFim').value,
+                local: document.getElementById('editLocal').value
+            };
+            const resposta = await fetch(`/mudar/${id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(dados)
+            });
+            const resultado = await resposta.json();
+            mostrarToast('success', '✅', resultado.mensagem);
+            fecharModal();
+            carregarLista();
+        }
+
+        async function cancelarReuniao(id) {
+            if(confirm('Cancelar esta reunião?')) {
+                const resposta = await fetch(`/cancelar/${id}`, { method: 'DELETE' });
+                const resultado = await resposta.json();
+                mostrarToast('success', '🗑️', resultado.mensagem);
+                carregarLista();
+            }
+        }
+
+        async function exportarJSON() {
+            try {
+                const resposta = await fetch('/exportar_json');
+                const dados = await resposta.json();
+                const blob = new Blob([JSON.stringify(dados, null, 2)], {type: 'application/json'});
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `agenda_${new Date().toISOString().slice(0,19)}.json`;
+                link.click();
+                mostrarToast('success', '✅', 'JSON exportado!');
+            } catch(e) {
+                mostrarToast('error', '❌', 'Erro ao exportar');
+            }
+        }
+
+        function fecharModal() {
+            document.getElementById('modalEdicao').style.display = 'none';
+        }
+
+        carregarLista();
+    </script>
+</body>
+</html>
