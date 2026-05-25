@@ -61,13 +61,8 @@
             animation-fill-mode: both;
         }
 
-        .loading-dots span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .loading-dots span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes blink {
             0%, 100% { opacity: 0; }
@@ -82,26 +77,10 @@
             padding: 40px 20px;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 18px;
-            opacity: 0.9;
-        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; color: white; margin-bottom: 40px; }
+        .header h1 { font-size: 48px; margin-bottom: 10px; }
+        .header p { font-size: 18px; opacity: 0.9; }
 
         .main-card {
             background: white;
@@ -130,52 +109,26 @@
             font-size: 16px;
         }
 
-        .tab:hover {
-            background: #e9ecef;
-        }
-
+        .tab:hover { background: #e9ecef; }
         .tab.active {
             color: #667eea;
             background: white;
             border-bottom: 3px solid #667eea;
         }
 
-        .tab-content {
-            display: none;
-            padding: 30px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content { display: none; padding: 30px; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group.full-width { grid-column: span 2; }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
         input, select, textarea {
             width: 100%;
             padding: 12px;
@@ -183,11 +136,7 @@
             border-radius: 12px;
             font-size: 14px;
         }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #667eea; }
 
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -200,11 +149,7 @@
             cursor: pointer;
             width: 100%;
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
-        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
 
         .btn-secondary {
             background: #6c757d;
@@ -261,12 +206,7 @@
             margin-bottom: 10px;
         }
 
-        .reuniao-nome {
-            font-size: 18px;
-            font-weight: 700;
-            color: #333;
-        }
-
+        .reuniao-nome { font-size: 18px; font-weight: 700; color: #333; }
         .reuniao-id {
             font-size: 11px;
             color: #6c757d;
@@ -290,14 +230,6 @@
             font-size: 12px;
         }
 
-        .badge-presencial {
-            background: #ffe0b2;
-            color: #e65100;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-        }
-
         .empty-state {
             text-align: center;
             padding: 60px;
@@ -316,13 +248,6 @@
             gap: 10px;
         }
 
-        .login-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
         /* MODAIS */
         .modal {
             display: none;
@@ -336,7 +261,6 @@
             align-items: center;
             z-index: 1000;
         }
-
         .modal-content {
             background: white;
             padding: 30px;
@@ -357,7 +281,6 @@
             align-items: center;
             z-index: 10001;
         }
-
         .confirm-content {
             background: white;
             padding: 30px;
@@ -366,31 +289,14 @@
             width: 90%;
             text-align: center;
         }
-
         .confirm-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
             margin-top: 20px;
         }
-
-        .btn-confirm-yes {
-            background: #dc3545;
-            color: white;
-            padding: 10px 25px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        .btn-confirm-no {
-            background: #6c757d;
-            color: white;
-            padding: 10px 25px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
+        .btn-confirm-yes { background: #dc3545; color: white; padding: 10px 25px; border: none; border-radius: 10px; cursor: pointer; }
+        .btn-confirm-no { background: #6c757d; color: white; padding: 10px 25px; border: none; border-radius: 10px; cursor: pointer; }
 
         /* TOAST */
         .toast-notification {
@@ -407,19 +313,13 @@
             min-width: 280px;
             border-left: 4px solid #28a745;
         }
-
-        .toast-notification.show {
-            transform: translateX(0);
-        }
-
+        .toast-notification.show { transform: translateX(0); }
         .toast-notification.success { border-left-color: #28a745; }
         .toast-notification.error { border-left-color: #dc3545; }
         .toast-notification.info { border-left-color: #17a2b8; }
-
         .toast-title { font-weight: 700; margin-bottom: 5px; font-size: 16px; }
         .toast-title.success { color: #28a745; }
         .toast-title.error { color: #dc3545; }
-
         .toast-message { color: #555; font-size: 14px; }
         .toast-close {
             position: absolute;
@@ -458,7 +358,7 @@
 
             <div class="main-card">
                 <!-- PAINEL DE LOGIN -->
-                <div class="login-panel" id="loginPanel">
+                <div class="login-panel">
                     <div id="loginForm" style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <input type="email" id="loginEmail" placeholder="Email" style="width: 200px;">
                         <input type="password" id="loginSenha" placeholder="Senha" style="width: 150px;">
@@ -601,7 +501,7 @@
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATION -->
+    <!-- TOAST -->
     <div id="toastNotification" class="toast-notification">
         <span class="toast-close" onclick="fecharToast()">&times;</span>
         <div class="toast-title" id="toastTitle">Sucesso</div>
@@ -611,10 +511,34 @@
     <script>
         let cancelarId = null;
 
-        // TELA DE CARREGAMENTO
         window.addEventListener('load', function() {
             carregarSalas();
-            verificarLogin();
             setTimeout(function() {
                 document.getElementById('loadingScreen').style.opacity = '0';
                 setTimeout(function() {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                }, 500);
+            }, 800);
+        });
+
+        function mostrarToast(tipo, titulo, mensagem) {
+            const toast = document.getElementById('toastNotification');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+            toast.className = 'toast-notification';
+            toast.classList.add(tipo);
+            toastTitle.className = 'toast-title ' + tipo;
+            toastTitle.textContent = titulo;
+            toastMessage.textContent = mensagem;
+            toast.classList.add('show');
+            setTimeout(() => fecharToast(), 3000);
+        }
+
+        function fecharToast() {
+            document.getElementById('toastNotification').classList.remove('show');
+        }
+
+        async function fazerLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const senha = document.getElementById('loginSenha')
