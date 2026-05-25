@@ -114,6 +114,7 @@
             display: flex;
             background: #f8f9fa;
             border-bottom: 2px solid #e9ecef;
+            flex-wrap: wrap;
         }
 
         .tab {
@@ -175,7 +176,7 @@
             color: #333;
         }
 
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 12px;
             border: 2px solid #e9ecef;
@@ -183,7 +184,7 @@
             font-size: 14px;
         }
 
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #667eea;
         }
@@ -203,6 +204,26 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-export {
+            background: #17a2b8;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         .btn-edit {
@@ -283,7 +304,26 @@
             color: #adb5bd;
         }
 
-        /* MODAL DE EDIÇÃO */
+        .login-panel {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .login-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* MODAIS */
         .modal {
             display: none;
             position: fixed;
@@ -305,7 +345,6 @@
             width: 90%;
         }
 
-        /* MODAL DE CONFIRMAÇÃO (POPUP DE CANCELAR) */
         .confirm-modal {
             display: none;
             position: fixed;
@@ -328,22 +367,11 @@
             text-align: center;
         }
 
-        .confirm-content h3 {
-            color: #dc3545;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-
-        .confirm-content p {
-            color: #555;
-            margin-bottom: 25px;
-            font-size: 16px;
-        }
-
         .confirm-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
+            margin-top: 20px;
         }
 
         .btn-confirm-yes {
@@ -353,12 +381,6 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .btn-confirm-yes:hover {
-            background: #c82333;
         }
 
         .btn-confirm-no {
@@ -368,15 +390,9 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
         }
 
-        .btn-confirm-no:hover {
-            background: #5a6268;
-        }
-
-        /* POPUP DE NOTIFICAÇÃO (TOAST) */
+        /* TOAST */
         .toast-notification {
             position: fixed;
             top: 20px;
@@ -396,37 +412,15 @@
             transform: translateX(0);
         }
 
-        .toast-notification.success {
-            border-left-color: #28a745;
-        }
+        .toast-notification.success { border-left-color: #28a745; }
+        .toast-notification.error { border-left-color: #dc3545; }
+        .toast-notification.info { border-left-color: #17a2b8; }
 
-        .toast-notification.error {
-            border-left-color: #dc3545;
-        }
+        .toast-title { font-weight: 700; margin-bottom: 5px; font-size: 16px; }
+        .toast-title.success { color: #28a745; }
+        .toast-title.error { color: #dc3545; }
 
-        .toast-notification.info {
-            border-left-color: #17a2b8;
-        }
-
-        .toast-title {
-            font-weight: 700;
-            margin-bottom: 5px;
-            font-size: 16px;
-        }
-
-        .toast-title.success {
-            color: #28a745;
-        }
-
-        .toast-title.error {
-            color: #dc3545;
-        }
-
-        .toast-message {
-            color: #555;
-            font-size: 14px;
-        }
-
+        .toast-message { color: #555; font-size: 14px; }
         .toast-close {
             position: absolute;
             top: 8px;
@@ -436,17 +430,10 @@
             font-size: 18px;
         }
 
-        .toast-close:hover {
-            color: #333;
-        }
-
         @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .form-group.full-width {
-                grid-column: span 1;
-            }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            .tab { font-size: 12px; padding: 12px; }
         }
     </style>
 </head>
@@ -456,12 +443,7 @@
     <div id="loadingScreen" class="loading-screen">
         <div class="loading-content">
             <div class="spinner"></div>
-            <div class="loading-text">
-                Carregando
-                <div class="loading-dots">
-                    <span>.</span><span>.</span><span>.</span>
-                </div>
-            </div>
+            <div class="loading-text">Carregando<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></div>
             <p style="margin-top: 20px; font-size: 14px; opacity: 0.8;">Agenda de Reuniões</p>
         </div>
     </div>
@@ -475,9 +457,24 @@
             </div>
 
             <div class="main-card">
+                <!-- PAINEL DE LOGIN -->
+                <div class="login-panel" id="loginPanel">
+                    <div id="loginForm" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <input type="email" id="loginEmail" placeholder="Email" style="width: 200px;">
+                        <input type="password" id="loginSenha" placeholder="Senha" style="width: 150px;">
+                        <button class="btn-secondary" onclick="fazerLogin()">Entrar</button>
+                        <button class="btn-secondary" onclick="mostrarRegistro()">Registrar</button>
+                    </div>
+                    <div id="userInfo" style="display: none;">
+                        <span>👤 <span id="userNome"></span></span>
+                        <button class="btn-secondary" onclick="fazerLogout()">Sair</button>
+                    </div>
+                </div>
+
                 <div class="tabs">
                     <button class="tab active" onclick="switchTab('agendar')">➕ Agendar Reunião</button>
                     <button class="tab" onclick="switchTab('ver')">📋 Ver Agenda</button>
+                    <button class="tab" onclick="switchTab('salas')">🏢 Salas</button>
                 </div>
 
                 <!-- ABA AGENDAR -->
@@ -485,85 +482,114 @@
                     <h2>Nova Reunião</h2>
                     <form id="agendaForm">
                         <div class="form-grid">
-                            <div class="form-group">
-                                <label>📝 Nome da Reunião</label>
-                                <input type="text" id="nomeReuniao" placeholder="Ex: Reunião de vendas, Alinhamento, etc" required>
+                            <div class="form-group full-width">
+                                <label>📝 Título da Reunião</label>
+                                <input type="text" id="titulo" placeholder="Ex: Reunião de vendas" required>
                             </div>
-                            <div class="form-group">
-                                <label>👤 Nome do Cliente</label>
-                                <input type="text" id="nome" placeholder="Digite o nome completo" required>
-                            </div>
-                            <div class="form-group">
-                                <label>📞 Telefone</label>
-                                <input type="tel" id="telefone" placeholder="(00) 00000-0000" required>
+                            <div class="form-group full-width">
+                                <label>📄 Descrição</label>
+                                <textarea id="descricao" rows="3" placeholder="Descrição da reunião..."></textarea>
                             </div>
                             <div class="form-group">
                                 <label>📅 Data</label>
                                 <input type="date" id="data" required>
                             </div>
                             <div class="form-group">
-                                <label>⏰ Horário</label>
-                                <input type="time" id="horario" required>
+                                <label>⏰ Horário Início</label>
+                                <input type="time" id="horario_inicio" required>
                             </div>
-                            <div class="form-group full-width">
-                                <label>📍 Local da Reunião</label>
-                                <select id="local">
-                                    <option value="meet">💻 Google Meet (Online)</option>
-                                    <option value="Presencial">🏢 Presencial (Escritório)</option>
+                            <div class="form-group">
+                                <label>⏰ Horário Fim</label>
+                                <input type="time" id="horario_fim" required>
+                            </div>
+                            <div class="form-group">
+                                <label>📍 Sala</label>
+                                <select id="sala_id">
+                                    <option value="">Selecione uma sala</option>
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn-primary">✅ Agendar Compromisso</button>
+                        <button type="submit" class="btn-primary">✅ Salvar Agendamento</button>
                     </form>
                 </div>
 
                 <!-- ABA VER AGENDA -->
                 <div id="verTab" class="tab-content">
-                    <h2>Reuniões Agendadas</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+                        <h2>Reuniões Agendadas</h2>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="carregarLista()" class="btn-secondary">🔄 Atualizar</button>
+                            <button onclick="exportarJSON()" class="btn-export">📋 Exportar JSON</button>
+                        </div>
+                    </div>
                     <div id="lista"></div>
+                </div>
+
+                <!-- ABA SALAS -->
+                <div id="salasTab" class="tab-content">
+                    <h2>Salas Disponíveis</h2>
+                    <div id="salasLista"></div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- MODAL DE REGISTRO -->
+    <div id="modalRegistro" class="modal">
+        <div class="modal-content">
+            <h3>📝 Registrar</h3>
+            <div class="form-group">
+                <label>Nome</label>
+                <input type="text" id="regNome" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="regEmail" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
+            </div>
+            <div class="form-group">
+                <label>Senha</label>
+                <input type="password" id="regSenha" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
+            </div>
+            <button onclick="registrar()" class="btn-primary">Registrar</button>
+            <button onclick="fecharModalRegistro()" style="margin-top:10px; width:100%; padding:10px; background:#6c757d; color:white; border:none; border-radius:8px; cursor:pointer;">Cancelar</button>
+        </div>
+    </div>
+
     <!-- MODAL DE EDIÇÃO -->
-    <div id="modal" class="modal">
+    <div id="modalEdicao" class="modal">
         <div class="modal-content">
             <h3>✏️ Editar Reunião</h3>
             <input type="hidden" id="editId">
             <div class="form-group">
-                <label>📝 Nome da Reunião</label>
-                <input type="text" id="editNomeReuniao" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
+                <label>Título</label>
+                <input type="text" id="editTitulo" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
             </div>
             <div class="form-group">
-                <label>👤 Nome do Cliente</label>
-                <input type="text" id="editNome" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
+                <label>Descrição</label>
+                <textarea id="editDescricao" rows="3" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;"></textarea>
             </div>
             <div class="form-group">
-                <label>📞 Telefone</label>
-                <input type="text" id="editTelefone" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
-            </div>
-            <div class="form-group">
-                <label>📅 Data</label>
+                <label>Data</label>
                 <input type="date" id="editData" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
             </div>
             <div class="form-group">
-                <label>⏰ Horário</label>
-                <input type="time" id="editHorario" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
+                <label>Horário Início</label>
+                <input type="time" id="editHorarioInicio" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
             </div>
             <div class="form-group">
-                <label>📍 Local</label>
-                <select id="editLocal" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
-                    <option value="meet">💻 Google Meet (Online)</option>
-                    <option value="Presencial">🏢 Presencial (Escritório)</option>
-                </select>
+                <label>Horário Fim</label>
+                <input type="time" id="editHorarioFim" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;">
             </div>
-            <button onclick="salvarEdicao()" class="btn-primary" style="margin-bottom:10px;">💾 Salvar Alterações</button>
-            <button onclick="fecharModal()" style="width:100%; padding:10px; background:#6c757d; color:white; border:none; border-radius:8px; cursor:pointer;">Cancelar</button>
+            <div class="form-group">
+                <label>Sala</label>
+                <select id="editSalaId" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #e9ecef; border-radius:8px;"></select>
+            </div>
+            <button onclick="salvarEdicao()" class="btn-primary">💾 Salvar</button>
+            <button onclick="fecharModalEdicao()" style="margin-top:10px; width:100%; padding:10px; background:#6c757d; color:white; border:none; border-radius:8px; cursor:pointer;">Cancelar</button>
         </div>
     </div>
 
-    <!-- MODAL DE CONFIRMAÇÃO (CANCELAR REUNIÃO) -->
+    <!-- MODAL DE CONFIRMAÇÃO -->
     <div id="confirmModal" class="confirm-modal">
         <div class="confirm-content">
             <h3>⚠️ Confirmar</h3>
@@ -575,217 +601,20 @@
         </div>
     </div>
 
-    <!-- POPUP DE NOTIFICAÇÃO -->
+    <!-- TOAST NOTIFICATION -->
     <div id="toastNotification" class="toast-notification">
         <span class="toast-close" onclick="fecharToast()">&times;</span>
         <div class="toast-title" id="toastTitle">Sucesso</div>
-        <div class="toast-message" id="toastMessage">Mensagem aqui</div>
+        <div class="toast-message" id="toastMessage">Mensagem</div>
     </div>
 
     <script>
-        // Variável para guardar o ID da reunião a ser cancelada
         let cancelarId = null;
 
         // TELA DE CARREGAMENTO
         window.addEventListener('load', function() {
+            carregarSalas();
+            verificarLogin();
             setTimeout(function() {
                 document.getElementById('loadingScreen').style.opacity = '0';
                 setTimeout(function() {
-                    document.getElementById('loadingScreen').style.display = 'none';
-                    document.getElementById('mainContent').style.display = 'block';
-                }, 500);
-            }, 800);
-        });
-
-        // FUNÇÃO DO POPUP PERSONALIZADO
-        function mostrarToast(tipo, titulo, mensagem) {
-            const toast = document.getElementById('toastNotification');
-            const toastTitle = document.getElementById('toastTitle');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            toast.className = 'toast-notification';
-            toast.classList.add(tipo);
-            toastTitle.className = 'toast-title ' + tipo;
-            
-            toastTitle.textContent = titulo;
-            toastMessage.textContent = mensagem;
-            
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                fecharToast();
-            }, 3000);
-        }
-        
-        function fecharToast() {
-            const toast = document.getElementById('toastNotification');
-            toast.classList.remove('show');
-        }
-
-        // FUNÇÃO DO POPUP DE CONFIRMAÇÃO
-        function mostrarConfirmacao(id) {
-            cancelarId = id;
-            document.getElementById('confirmModal').style.display = 'flex';
-        }
-
-        function fecharConfirmacao() {
-            document.getElementById('confirmModal').style.display = 'none';
-            cancelarId = null;
-        }
-
-        // Eventos dos botões do modal de confirmação
-        document.getElementById('confirmYes').onclick = async function() {
-            if(cancelarId) {
-                const resposta = await fetch(`/cancelar/${cancelarId}`, { method: 'DELETE' });
-                const resultado = await resposta.json();
-                if(resultado.sucesso) {
-                    mostrarToast('info', '🗑️ Cancelado!', resultado.mensagem);
-                } else {
-                    mostrarToast('error', '❌ Erro!', resultado.mensagem);
-                }
-                fecharConfirmacao();
-                carregarLista();
-            }
-        };
-
-        document.getElementById('confirmNo').onclick = function() {
-            fecharConfirmacao();
-        };
-
-        // TROCAR ABA
-        function switchTab(tab) {
-            document.getElementById('agendarTab').classList.remove('active');
-            document.getElementById('verTab').classList.remove('active');
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            
-            if(tab === 'agendar') {
-                document.getElementById('agendarTab').classList.add('active');
-                document.querySelectorAll('.tab')[0].classList.add('active');
-            } else {
-                document.getElementById('verTab').classList.add('active');
-                document.querySelectorAll('.tab')[1].classList.add('active');
-                carregarLista();
-            }
-        }
-
-        // AGENDAR REUNIÃO
-        document.getElementById('agendaForm').onsubmit = async (e) => {
-            e.preventDefault();
-            
-            const dados = {
-                nomeReuniao: document.getElementById('nomeReuniao').value,
-                nome: document.getElementById('nome').value,
-                telefone: document.getElementById('telefone').value,
-                data: document.getElementById('data').value,
-                horario: document.getElementById('horario').value,
-                local: document.getElementById('local').value
-            };
-            
-            const resposta = await fetch('/agendar', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(dados)
-            });
-            
-            const resultado = await resposta.json();
-            
-            if(resultado.sucesso) {
-                mostrarToast('success', '✅ Sucesso!', resultado.mensagem);
-                document.getElementById('agendaForm').reset();
-                if(document.getElementById('verTab').classList.contains('active')) {
-                    carregarLista();
-                }
-            } else {
-                mostrarToast('error', '❌ Erro!', resultado.mensagem);
-            }
-        };
-
-        // CARREGAR LISTA
-        async function carregarLista() {
-            const resposta = await fetch('/listar');
-            const reunioes = await resposta.json();
-            const listaDiv = document.getElementById('lista');
-            
-            if(reunioes.length === 0) {
-                listaDiv.innerHTML = '<div class="empty-state">📭 Nenhuma reunião agendada ainda<br><br>Volte para a aba "Agendar" para criar um novo compromisso</div>';
-            } else {
-                listaDiv.innerHTML = reunioes.map(r => `
-                    <div class="reuniao-item">
-                        <div class="reuniao-header">
-                            <span class="reuniao-nome">📝 ${r.nomeReuniao || 'Sem título'}</span>
-                            <span class="reuniao-id">ID: ${r.id}</span>
-                        </div>
-                        <div class="reuniao-detalhes">
-                            <span>👤 ${r.nome}</span>
-                            <span>📱 ${r.telefone}</span>
-                            <span>📅 ${formatarData(r.data)}</span>
-                            <span>⏰ ${r.horario}</span>
-                            <span class="${r.local === 'meet' ? 'badge-meet' : 'badge-presencial'}">
-                                ${r.local === 'meet' ? '💻 Meet' : '🏢 Presencial'}
-                            </span>
-                        </div>
-                        <div>
-                            <button class="btn-edit" onclick="abrirModalEditar(${r.id})">✏️ Editar</button>
-                            <button class="btn-delete" onclick="mostrarConfirmacao(${r.id})">🗑️ Cancelar</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function formatarData(data) {
-            if(!data) return 'Data não definida';
-            const partes = data.split('-');
-            return `${partes[2]}/${partes[1]}/${partes[0]}`;
-        }
-
-        // EDITAR REUNIÃO
-        async function abrirModalEditar(id) {
-            const resposta = await fetch(`/buscar/${id}`);
-            const resultado = await resposta.json();
-            if(resultado.sucesso) {
-                const r = resultado.reuniao;
-                document.getElementById('editId').value = r.id;
-                document.getElementById('editNomeReuniao').value = r.nomeReuniao || '';
-                document.getElementById('editNome').value = r.nome;
-                document.getElementById('editTelefone').value = r.telefone;
-                document.getElementById('editData').value = r.data;
-                document.getElementById('editHorario').value = r.horario;
-                document.getElementById('editLocal').value = r.local;
-                document.getElementById('modal').style.display = 'flex';
-            } else {
-                mostrarToast('error', '❌ Erro!', resultado.mensagem);
-            }
-        }
-
-        async function salvarEdicao() {
-            const id = document.getElementById('editId').value;
-            const dados = {
-                nomeReuniao: document.getElementById('editNomeReuniao').value,
-                nome: document.getElementById('editNome').value,
-                telefone: document.getElementById('editTelefone').value,
-                data: document.getElementById('editData').value,
-                horario: document.getElementById('editHorario').value,
-                local: document.getElementById('editLocal').value
-            };
-            const resposta = await fetch(`/mudar/${id}`, {
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(dados)
-            });
-            const resultado = await resposta.json();
-            if(resultado.sucesso) {
-                mostrarToast('success', '✅ Atualizado!', resultado.mensagem);
-            } else {
-                mostrarToast('error', '❌ Erro!', resultado.mensagem);
-            }
-            fecharModal();
-            carregarLista();
-        }
-
-        function fecharModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-    </script>
-</body>
-</html>
