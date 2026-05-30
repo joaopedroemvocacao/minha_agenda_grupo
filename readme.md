@@ -2,13 +2,13 @@
 
 ---
 
-Proposta do Projeto
+🎯 Proposta do Projeto
 
 O projeto tem como objetivo principal a criação de um sistema de agendamento de reuniões, tanto online quanto presencial. O sistema foi desenvolvido para facilitar a organização de horários e melhorar a comunicação entre usuários, oferecendo uma plataforma simples, funcional e acessível.
 
 ---
 
-Integrantes e Funções
+ 👥 Integrantes e Funções
 
 · João Pedro – Responsável pela estrutura do site (Front-end)
 · João Victor – Responsável pelo banco de dados (Back-end)
@@ -16,7 +16,7 @@ Integrantes e Funções
 
 ---
 
-Descrição do Projeto
+🚀  Descrição do Projeto
 
 O sistema permite realizar agendamentos de reuniões de forma prática e organizada. O usuário pode:
 
@@ -36,7 +36,7 @@ Tecnologias utilizadas:
 
 ---
 
-Ciclo de Desenvolvimento
+🧠 Ciclo de Desenvolvimento
 
 1. Idealização – Começamos com a ideia principal e criamos um esboço inicial.
 2. Base e modelo – Utilizamos como base um modelo pré-definido de um site de salão de beleza e adaptamos conforme as necessidades do projeto.
@@ -47,6 +47,6 @@ Ciclo de Desenvolvimento
 
 ---
 
-Futuro do Projeto
+🔮 Futuro do Projeto
 
 Pretendemos aprimorar a estrutura do site, adicionar novas funcionalidades como autenticação de usuários e notificações, e utilizá-lo como portfólio em nossos currículos no futuro.
